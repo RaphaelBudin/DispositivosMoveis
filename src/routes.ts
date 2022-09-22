@@ -1,6 +1,3 @@
-import { DeleteSalesController } from './controllers/sales/DeleteSalesController';
-import { CreateSalesController } from './controllers/sales/CreateSalesController';
-import { ListSalesController } from './controllers/sales/ListSalesController';
 import { Router } from "express";
 
 //  USERS
@@ -23,6 +20,11 @@ import { DeleteCategoryController } from "./controllers/category/DeleteCategoryC
 
 // SALES
 import { UpdateSalesController } from "./controllers/sales/UpdateSalesController";
+import { DeleteSalesController } from './controllers/sales/DeleteSalesController';
+import { CreateSalesController } from './controllers/sales/CreateSalesController';
+import { ListSalesController } from './controllers/sales/ListSalesController';
+import { AuthenticateUserController } from "./controllers/autentication/AuthenticateUserController";
+import { ensureAuthenticated } from "./middleware/ensureAuthenticated";
 
 const router = Router();
 
@@ -31,46 +33,54 @@ const listUsersController  = new ListUsersController();
 const createUserController  = new CreateUserController();
 const deleteUserController = new DeleteUserController();
 const updateUserController = new UpdateUserController();
-
-router.get("/users", listUsersController.handle);
-router.post("/users", createUserController.handle);
-router.patch("/users", updateUserController.handle);
-router.delete("/users", deleteUserController.handler);
-
-// CATEGORY
+const autenticateUserController = new AuthenticateUserController();
 
 const listCategoryController = new ListCategoryController();
 const createCategoryController = new CreateCategoryController();
 const updateCategoryController = new UpdateCategoryController();
 const deleteCategoryController = new DeleteCategoryController();
 
-router.get("/category", listCategoryController.handle);
-router.post("/category", createCategoryController.handle);
-router.patch("/category", updateCategoryController.handle);
-router.delete("/category", deleteCategoryController.handle);
-
-// PRODUCTS
-
 const listProductController = new ListProductController();
 const createProductController = new CreateProductController();
 const updateProductController = new UpdateProductController();
 const deleteProductController = new DeleteProductController();
-
-router.get("/products", listProductController.handle);
-router.post("/products", createProductController.handle);
-router.patch("/products", updateProductController.handle);
-router.delete("/products", deleteProductController.handle);
-
-//  SALES
 
 const listSalesController = new ListSalesController();
 const createSalesController = new CreateSalesController();
 const updateSalesController = new UpdateSalesController();
 const deleteSalesController = new DeleteSalesController();
 
+
+// SEM AUTENTICAÇÃO
+router.post("/login", autenticateUserController.handle);
+router.post("/users", createUserController.handle);
+router.get("/category", listCategoryController.handle);
+router.get("/products", listProductController.handle);
+
+
+//USERS
+
+router.get("/users", listUsersController.handle);
+router.patch("/users", updateUserController.handle);
+router.delete("/users", deleteUserController.handler);
+
+// CATEGORY
+router.post("/category", createCategoryController.handle);
+router.patch("/category", updateCategoryController.handle);
+router.delete("/category", deleteCategoryController.handle);
+
+// PRODUCTS
+router.post("/products", createProductController.handle);
+router.patch("/products", updateProductController.handle);
+router.delete("/products", deleteProductController.handle);
+
+//  SALES
 router.get("/sales", listSalesController.handle);
 router.put("/sales", createSalesController.handle);
 router.patch("/sales", updateSalesController.handle);
 router.delete("/sales", deleteSalesController.handle);
+
+router.use(ensureAuthenticated);
+
 
 export {router}
