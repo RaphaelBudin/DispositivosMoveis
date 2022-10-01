@@ -23,8 +23,10 @@ import { UpdateSalesController } from "./controllers/sales/UpdateSalesController
 import { DeleteSalesController } from './controllers/sales/DeleteSalesController';
 import { CreateSalesController } from './controllers/sales/CreateSalesController';
 import { ListSalesController } from './controllers/sales/ListSalesController';
+
 import { AuthenticateUserController } from "./controllers/autentication/AuthenticateUserController";
 import { ensureAuthenticated } from "./middleware/ensureAuthenticated";
+import { ensureAdmin } from "./middleware/ensureAdmin";
 
 const router = Router();
 
@@ -59,9 +61,11 @@ router.get("/products", listProductController.handle);
 
 
 //USERS
-
-router.get("/users", listUsersController.handle);
+router.use(ensureAuthenticated);
 router.patch("/users", updateUserController.handle);
+
+router.use(ensureAdmin);
+router.get("/users", listUsersController.handle);
 router.delete("/users", deleteUserController.handler);
 
 // CATEGORY
@@ -79,8 +83,5 @@ router.get("/sales", listSalesController.handle);
 router.put("/sales", createSalesController.handle);
 router.patch("/sales", updateSalesController.handle);
 router.delete("/sales", deleteSalesController.handle);
-
-router.use(ensureAuthenticated);
-
 
 export {router}
