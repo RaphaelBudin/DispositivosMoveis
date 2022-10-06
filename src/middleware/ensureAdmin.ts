@@ -10,6 +10,7 @@ export async function ensureAdmin(
   // Verificar se usuario admin
 
   if (admin) {
+    console.log("Login administrador Autorizado.");
     return next();
   }
 

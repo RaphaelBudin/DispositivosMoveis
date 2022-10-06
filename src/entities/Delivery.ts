@@ -2,7 +2,7 @@ import { Sales } from './Sales';
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryColumn, UpdateDateColumn } from "typeorm";
 import {v4 as uuid} from "uuid";
 
-@Entity("delivery")
+@Entity("deliveries")
 export class Delivery {
     @PrimaryColumn()
     readonly id!: string;

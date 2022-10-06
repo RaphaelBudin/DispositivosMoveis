@@ -1,30 +1,39 @@
+import { getCustomRepository } from 'typeorm';
+import { SalesRepositories } from './../../repositories/SalesRepositories';
+
 interface ISales{
-    id:number,
-    productId:number,
-    userId:number,
+    product_id:string,
+    user_id:string,
     total:number,
-    description:string,
-    obs?:string,
+    desc:string,
+    obs?:string,    
 }
 
 export class CreateSalesService{
-    async execute({id,productId,userId,total,description,obs}:ISales){
-        if (!id) throw new Error("id vazio");
-        if (!productId) throw new Error("productId vazio");
-        if (!userId) throw new Error("userId vazio");
+    async execute({product_id,user_id,total,desc,obs=""}:ISales){
+        console.log("Validando dados...");
+        if (!product_id) throw new Error("product_id vazio");
+        if (!user_id) throw new Error("user_id vazio");
         if (!total) throw new Error("total vazio");
-        if (!description) throw new Error("description vazio");
-        if (!obs) obs="";
+        if (!desc) throw new Error("desc vazio");
+        console.log("Todos os dados necessários foram enviados");
         
-        const objetoResposta = {
-            id,
-            productId,
-            userId,
-            total,
-            description,
-            obs,
-        }
+        console.log("Criando conexão com SalesRepositories...");
+        const salesRepository = getCustomRepository(SalesRepositories);
+        console.log("Conexão com SalesRepositories criada");
 
-        return objetoResposta;
+        console.log("Como Sales podem ser duplicadas, duplicatas não serão verificadas");
+
+        const newSales = salesRepository.create({
+            product_id,
+            user_id,
+            total,
+            desc,
+            obs,
+        });
+
+        await salesRepository.save(newSales);
+
+        return newSales;
     }
 }

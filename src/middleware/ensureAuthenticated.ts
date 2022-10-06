@@ -20,18 +20,18 @@ export function ensureAuthenticated(
   }
 
   const [, token] = authToken.split(" "); //Descarta a primeira informação, não é relevante
-  console.log("Não autorizado, sem token");
   try {
     // Validar se token é válido
     const { sub } = verify(
       token,
       "4f93ac9d10cb751b8c9c646bc9dbccb9"
-    ) as IPayload;   
-
-    //request.user_id = sub;
-
-    return next();
-  } catch (err) {
+      ) as IPayload;   
+      
+      //request.user_id = sub;
+      console.log("Login comum Autorizado.");
+      return next();
+    } catch (err) {
+    console.log("Não autorizado, sem token");
     return response.status(401).end();
   }
 }

@@ -67,6 +67,6 @@ export class CreateSales1664583442636 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropDatabase("sales");
+        await queryRunner.dropTable("sales");
     }
 }

@@ -50,7 +50,7 @@ export class CreateProduct1664582734305 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropDatabase("products");
+        await queryRunner.dropTable("products");
     }
 
 }

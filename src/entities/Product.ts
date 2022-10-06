@@ -28,6 +28,12 @@ import {
     @ManyToOne(() => Category)
     idCategory!:Category;
 
+    @Column()
+    price!: number;
+
+    @Column()
+    url!: string;
+
     @CreateDateColumn()
       created_at!: Date;
   

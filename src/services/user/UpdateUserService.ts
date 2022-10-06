@@ -1,29 +1,50 @@
+import { getCustomRepository } from 'typeorm';
 import { hash } from 'bcryptjs';
+import { UsersRepositories } from '../../repositories/UsersRepositories';
 
 interface IUpdate {
-    id:number,
-    nome:string,
     email:string,
-    password:string
+    password:string,
+    newName?:string,
+    newPassword?:string,
 }
 
 export class UpdateUserService{
-    async execute({id,nome,email,password}:IUpdate){
+    async execute({newName,email,password,newPassword}:IUpdate){
         //Verifica erros
-        if (!id) throw new Error("ID vazio. Preencha o ID");
-        if (!nome) throw new Error("Nome vazio. Preencha o nome");
-        if (!email) throw new Error("Email vazio. Preencha o email");
-        if (!password) throw new Error("Senha vazia. Preencha a senha");
+        if(!email) throw new Error("email não preenchido");
+        if(!password) throw new Error("senha não preenchida");
 
-        const passwordHash = await hash(password, 8);
-        var vUser = {
-            id:id,
-            nome:nome,
-            email:email,
-            password:passwordHash,
-        };
+        const usersRepositories = getCustomRepository(UsersRepositories);
+        
+        let user = await usersRepositories.findOne({email})
+        if (!user) throw new Error("Email não existe");
+        
+        password = await hash(password, 8);
+        const passwordMatches = await usersRepositories.findOne({email, password});
+        if(!passwordMatches) {
+            console.log("Hash enviado: ");
+            console.log(password);
+            throw new Error("Senhas não batem...");
+        }   
+        
+        if(newPassword) {
+            password=await hash(newPassword,8);
+            console.log("Hash nova senha:");
+            console.log(password);
+            user.password = newPassword;
+        }
 
-        return vUser;
+        if(newName){
+          user.name = newName;
+        }
+
+        await usersRepositories.save(user, {
+            name:user.name,
+            password:user.password,
+        });
+
+        return user;
 
     }
 }

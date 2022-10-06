@@ -1,3 +1,4 @@
+import { CreateDeliveryController } from './controllers/delivery/CreateDeliveryController';
 import { Router } from "express";
 
 //  USERS
@@ -52,6 +53,8 @@ const createSalesController = new CreateSalesController();
 const updateSalesController = new UpdateSalesController();
 const deleteSalesController = new DeleteSalesController();
 
+const createDeliveryController = new CreateDeliveryController();
+
 
 // SEM AUTENTICAÇÃO
 router.post("/login", autenticateUserController.handle);
@@ -59,29 +62,33 @@ router.post("/users", createUserController.handle);
 router.get("/category", listCategoryController.handle);
 router.get("/products", listProductController.handle);
 
-
 //USERS
-router.use(ensureAuthenticated);
+
 router.patch("/users", updateUserController.handle);
 
-router.use(ensureAdmin);
+
 router.get("/users", listUsersController.handle);
 router.delete("/users", deleteUserController.handler);
 
 // CATEGORY
 router.post("/category", createCategoryController.handle);
-router.patch("/category", updateCategoryController.handle);
+router.put("/category", updateCategoryController.handle);
 router.delete("/category", deleteCategoryController.handle);
 
 // PRODUCTS
 router.post("/products", createProductController.handle);
-router.patch("/products", updateProductController.handle);
+router.put("/products", updateProductController.handle);
 router.delete("/products", deleteProductController.handle);
 
 //  SALES
 router.get("/sales", listSalesController.handle);
-router.put("/sales", createSalesController.handle);
-router.patch("/sales", updateSalesController.handle);
+router.post("/sales", createSalesController.handle);
+router.put("/sales", updateSalesController.handle);
 router.delete("/sales", deleteSalesController.handle);
+
+router.post("/delivery", createDeliveryController.handle);
+
+router.use(ensureAuthenticated);
+router.use(ensureAdmin);
 
 export {router}

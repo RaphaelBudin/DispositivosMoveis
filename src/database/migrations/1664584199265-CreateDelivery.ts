@@ -1,5 +1,4 @@
 import {MigrationInterface, QueryRunner, Table} from "typeorm";
-
 export class CreateDelivery1664584199265 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
@@ -50,7 +49,7 @@ export class CreateDelivery1664584199265 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropDatabase("delivery");
+        await queryRunner.dropTable("delivery");
     }
 
 }
