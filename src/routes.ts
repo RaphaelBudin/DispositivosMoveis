@@ -1,39 +1,41 @@
-import { CreateDeliveryController } from './controllers/delivery/CreateDeliveryController';
+import { ListDeliveryController } from "./controllers/delivery/ListDeliveryController";
+import { CreateDeliveryController } from "./controllers/delivery/CreateDeliveryController";
 import { Router } from "express";
 
 //  USERS
 import { ListUsersController } from "./controllers/user/ListUsersController";
 import { CreateUserController } from "./controllers/user/CreateUserController";
-import { UpdateUserController } from './controllers/user/UpdateUserController';
+import { UpdateUserController } from "./controllers/user/UpdateUserController";
 import { DeleteUserController } from "./controllers/user/DeleteUserController";
 
 //  PRODUCT
-import { CreateProductController } from './controllers/product/CreateProductController';
-import { ListProductController } from './controllers/product/ListProductController';
-import { UpdateProductController } from './controllers/product/UpdateProductController';
-import { DeleteProductController } from './controllers/product/DeleteProductController';
+import { CreateProductController } from "./controllers/product/CreateProductController";
+import { ListProductController } from "./controllers/product/ListProductController";
+import { UpdateProductController } from "./controllers/product/UpdateProductController";
+import { DeleteProductController } from "./controllers/product/DeleteProductController";
 
 // CATEGORY
-import { ListCategoryController } from './controllers/category/ListCategoryController';
-import { CreateCategoryController } from './controllers/category/CreateCategoryController';
-import { UpdateCategoryController } from './controllers/category/UpdateCategoryController';
+import { ListCategoryController } from "./controllers/category/ListCategoryController";
+import { CreateCategoryController } from "./controllers/category/CreateCategoryController";
+import { UpdateCategoryController } from "./controllers/category/UpdateCategoryController";
 import { DeleteCategoryController } from "./controllers/category/DeleteCategoryController";
 
 // SALES
 import { UpdateSalesController } from "./controllers/sales/UpdateSalesController";
-import { DeleteSalesController } from './controllers/sales/DeleteSalesController';
-import { CreateSalesController } from './controllers/sales/CreateSalesController';
-import { ListSalesController } from './controllers/sales/ListSalesController';
+import { DeleteSalesController } from "./controllers/sales/DeleteSalesController";
+import { CreateSalesController } from "./controllers/sales/CreateSalesController";
+import { ListSalesController } from "./controllers/sales/ListSalesController";
 
 import { AuthenticateUserController } from "./controllers/autentication/AuthenticateUserController";
 import { ensureAuthenticated } from "./middleware/ensureAuthenticated";
 import { ensureAdmin } from "./middleware/ensureAdmin";
+import { UpdateDeliveryController } from "./controllers/delivery/UpdateDeliveryController";
 
 const router = Router();
 
 //      USER
-const listUsersController  = new ListUsersController();
-const createUserController  = new CreateUserController();
+const listUsersController = new ListUsersController();
+const createUserController = new CreateUserController();
 const deleteUserController = new DeleteUserController();
 const updateUserController = new UpdateUserController();
 const autenticateUserController = new AuthenticateUserController();
@@ -54,7 +56,8 @@ const updateSalesController = new UpdateSalesController();
 const deleteSalesController = new DeleteSalesController();
 
 const createDeliveryController = new CreateDeliveryController();
-
+const listDeliveryController = new ListDeliveryController();
+const updateDeliveryController = new UpdateDeliveryController();
 
 // SEM AUTENTICAÇÃO
 router.post("/login", autenticateUserController.handle);
@@ -64,8 +67,7 @@ router.get("/products", listProductController.handle);
 
 //USERS
 
-router.patch("/users", updateUserController.handle);
-
+router.put("/users", updateUserController.handle);
 
 router.get("/users", listUsersController.handle);
 router.delete("/users", deleteUserController.handler);
@@ -87,8 +89,10 @@ router.put("/sales", updateSalesController.handle);
 router.delete("/sales", deleteSalesController.handle);
 
 router.post("/delivery", createDeliveryController.handle);
+router.get("/delivery", listDeliveryController.handle);
+router.put("/delivery", updateDeliveryController.handle);
 
 router.use(ensureAuthenticated);
 router.use(ensureAdmin);
 
-export {router}
+export { router };

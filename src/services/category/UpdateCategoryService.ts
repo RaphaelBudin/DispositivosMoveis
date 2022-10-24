@@ -1,33 +1,35 @@
-import { getCustomRepository } from 'typeorm';
+import { getCustomRepository } from "typeorm";
 import { CategoryRepositories } from "../../repositories/CategoryRepositories";
 
-interface ICategory{
-    id:string,
-    name:string,
-    description:string,
+interface ICategory {
+  id: string;
+  name?: string;
+  description?: string;
 }
 
-export class UpdateCategoryService{
-    async execute({id,name,description}:ICategory){
-        if(!id) throw new Error("id faltando");
-        if(!name) throw new Error("name faltando");
-        if(!description) throw new Error("description faltando");
+export class UpdateCategoryService {
+  async execute({ id, name, description }: ICategory) {
+    if (!id) throw new Error("id faltando");
+    if (!name && !description) throw new Error("sem argumentos para atualizar");
 
-        const categoryRepository = getCustomRepository(CategoryRepositories);
-        
-        const categoria = await categoryRepository.findOne({id});
-        if (!categoria){
-            throw new Error("Categoria não existe");
-        }
+    const categoryRepository = getCustomRepository(CategoryRepositories);
 
-        const newCategory = await categoryRepository.create({
-            id,
-            name,
-            description,
-            updated_at: Date(),
-        });
-
-        return await categoryRepository.save(newCategory);
-        
+    let categoria = await categoryRepository.findOne({ id });
+    if (!categoria) {
+      throw new Error("Categoria não existe");
     }
+
+    if (name) categoria.name = name;
+    if (description) categoria.description = description;
+
+    return await categoryRepository.update(id, categoria).then(
+      (objUpdate) => {
+        console.log(objUpdate);
+        return { message: "Registro atualizado com sucesso!" };
+      },
+      (err) => {
+        throw new Error(err);
+      }
+    );
+  }
 }

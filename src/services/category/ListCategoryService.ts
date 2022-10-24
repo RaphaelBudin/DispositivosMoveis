@@ -1,22 +1,8 @@
-export class ListCategoryService{
-    async execute(){
-
-        const listaCategorias = [
-            {
-                id:1,
-                name:"Java",
-            },
-            {
-                id:2,
-
-                name:"Node",
-            },
-            {
-                id:1,
-                name:"React",
-            },
-        ]
-
-        return listaCategorias;
-    }
+import { getCustomRepository } from "typeorm";
+import { CategoryRepositories } from "../../repositories/CategoryRepositories";
+export class ListCategoryService {
+  async execute() {
+    const categoryRepository = getCustomRepository(CategoryRepositories);
+    return await categoryRepository.find();
+  }
 }
