@@ -30,6 +30,7 @@ import { AuthenticateUserController } from "./controllers/autentication/Authenti
 import { ensureAuthenticated } from "./middleware/ensureAuthenticated";
 import { ensureAdmin } from "./middleware/ensureAdmin";
 import { UpdateDeliveryController } from "./controllers/delivery/UpdateDeliveryController";
+import { DeleteDeliveryController } from "./controllers/delivery/DeleteDeliveryContoller";
 
 const router = Router();
 
@@ -58,6 +59,7 @@ const deleteSalesController = new DeleteSalesController();
 const createDeliveryController = new CreateDeliveryController();
 const listDeliveryController = new ListDeliveryController();
 const updateDeliveryController = new UpdateDeliveryController();
+const deleteDeliveryController = new DeleteDeliveryController();
 
 // SEM AUTENTICAÇÃO
 router.post("/login", autenticateUserController.handle);
@@ -91,6 +93,7 @@ router.delete("/sales", deleteSalesController.handle);
 router.post("/delivery", createDeliveryController.handle);
 router.get("/delivery", listDeliveryController.handle);
 router.put("/delivery", updateDeliveryController.handle);
+router.delete("/delivery", deleteDeliveryController.handle);
 
 router.use(ensureAuthenticated);
 router.use(ensureAdmin);

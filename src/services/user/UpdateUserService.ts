@@ -1,5 +1,5 @@
 import { getCustomRepository } from "typeorm";
-import { hash, compare } from "bcryptjs";
+import { hash } from "bcryptjs";
 import { UsersRepositories } from "../../repositories/UsersRepositories";
 
 interface IUpdate {
@@ -8,11 +8,19 @@ interface IUpdate {
   email: string;
   admin: boolean;
   password: string;
+  newPassword?: string;
 }
 //Caso dê algum erro de "Empty Criteria"...
 //Garanta que as variáveis que estão sendo passadas no Controller são exatamente as mesmas da interface IUpdate
 export class UpdateUserService {
-  async execute({ id, name, email, admin = false, password }: IUpdate) {
+  async execute({
+    id,
+    name,
+    email,
+    admin = false,
+    password,
+    newPassword,
+  }: IUpdate) {
     //Verifica erros
     if (!id) throw new Error("id não preenchido");
     if (!email) throw new Error("email não preenchido");
@@ -20,12 +28,14 @@ export class UpdateUserService {
 
     const usersRepositories = getCustomRepository(UsersRepositories);
 
-    let user = await usersRepositories.findOne({ email });
+    let user = await usersRepositories.findOne(id);
     if (!user) throw new Error("User não existe");
 
+    if (newPassword) password = newPassword;
     password = await hash(password, 8);
 
     user.name = name;
+    user.email = email;
     user.admin = admin;
     user.password = password;
     user.updated_at = new Date();

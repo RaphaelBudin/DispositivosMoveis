@@ -13,6 +13,7 @@ export class CreateDelivery1664584199265 implements MigrationInterface {
           {
             name: "sales_id",
             type: "uuid",
+            isNullable: true,
           },
           {
             name: "dt_entrega",
@@ -21,6 +22,7 @@ export class CreateDelivery1664584199265 implements MigrationInterface {
           {
             name: "obs",
             type: "varchar",
+            isNullable: true,
           },
           {
             name: "created_at",

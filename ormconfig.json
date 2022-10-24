@@ -4,7 +4,7 @@
     "port": 5432,
     "username": "rapha",
     "password": "123",
-    "database": "postgres",
+    "database": "teste",
     "synchronize": false,
     "logging": false,
     "migrations": [

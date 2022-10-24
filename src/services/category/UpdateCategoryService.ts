@@ -14,10 +14,8 @@ export class UpdateCategoryService {
 
     const categoryRepository = getCustomRepository(CategoryRepositories);
 
-    let categoria = await categoryRepository.findOne({ id });
-    if (!categoria) {
-      throw new Error("Categoria não existe");
-    }
+    let categoria = await categoryRepository.findOne(id);
+    if (!categoria) throw new Error("ID da categoria não existe");
 
     if (name) categoria.name = name;
     if (description) categoria.description = description;

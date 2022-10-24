@@ -14,10 +14,12 @@ export class CreateSales1664583442636 implements MigrationInterface {
           {
             name: "product_id",
             type: "uuid",
+            isNullable: true,
           },
           {
             name: "user_id",
             type: "uuid",
+            isNullable: true,
           },
           {
             name: "total",
@@ -26,10 +28,12 @@ export class CreateSales1664583442636 implements MigrationInterface {
           {
             name: "desc",
             type: "varchar",
+            isNullable: true,
           },
           {
             name: "obs",
             type: "varchar",
+            isNullable: true,
           },
           {
             name: "created_at",

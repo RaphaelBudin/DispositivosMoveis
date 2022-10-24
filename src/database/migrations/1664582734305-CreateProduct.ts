@@ -18,10 +18,22 @@ export class CreateProduct1664582734305 implements MigrationInterface {
           {
             name: "description",
             type: "varchar",
+            isNullable: true,
           },
           {
             name: "id_category",
             type: "uuid",
+            isNullable: true,
+          },
+          {
+            name: "url",
+            type: "varchar",
+            isNullable: true,
+          },
+          {
+            name: "price",
+            type: "DECIMAL",
+            isNullable: false,
           },
           {
             name: "created_at",
